@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 class EventModel {
   final String id;
   final String title;
@@ -47,6 +49,28 @@ class EventModel {
       link: json['link'],
       quota: json['quota'],
       pendaftaran: json['registrants'],
+    );
+  }
+}
+
+class EventResponse{
+  final bool error;
+  final String message;
+  final List<EventModel> listEvents;
+
+  EventResponse({
+    required this.error,
+    required this.message,
+    required this.listEvents,
+  });
+
+  factory EventResponse.fromJson(Map<String, dynamic> json){
+    final List<dynamic> eventsJson = json['data'];
+    final List<EventModel> events = eventsJson.map((eventJson) => EventModel.fromJson(eventJson)).toList();
+    return EventResponse(
+      error: json['error'],
+      message: json['message'],
+      listEvents: events,
     );
   }
 }
