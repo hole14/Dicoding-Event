@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dicoding_event/component/constrains.dart';
 
 void main() {
   runApp(const MyApp());
