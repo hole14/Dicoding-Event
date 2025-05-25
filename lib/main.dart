@@ -2,11 +2,18 @@ import 'package:dicoding_event/screen/favorite.dart';
 import 'package:dicoding_event/screen/detail.dart';
 import 'package:dicoding_event/screen/setting.dart';
 import 'package:dicoding_event/screen/home.dart';
+import 'package:dicoding_event/viewModel/eventViewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:dicoding_event/component/constrains.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => EventViewModel(),
+      child: MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
