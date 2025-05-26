@@ -47,6 +47,15 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 8.0,
               ),
+              SizedBox(
+                height: 45,
+                child: TextField(
+                  decoration: kDecorationText,
+                  onChanged: (value) {
+                  print(value);
+                  },
+                ),
+              ),
             ],
           );
         },

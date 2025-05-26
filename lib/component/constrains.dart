@@ -7,3 +7,18 @@ const kTitleUpcoming = TextStyle(
   fontSize: 20,
   fontWeight: FontWeight.bold
 );
+
+const kDecorationText = InputDecoration(
+  hintText: 'Event...',
+  hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+  prefixIcon: Icon(Icons.search),
+  border: OutlineInputBorder(
+    borderRadius:BorderRadius.all(
+      Radius.circular(20.0),
+    ),
+    borderSide: BorderSide(
+      color: primaryColor,
+      width: 2.0,
+    ),
+  )
+);
