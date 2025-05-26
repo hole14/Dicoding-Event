@@ -9,8 +9,10 @@ import 'package:dicoding_event/component/constrains.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => EventViewModel(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => EventViewModel()),
+      ],
       child: MyApp(),
     )
   );

@@ -19,7 +19,7 @@ class _UpcomingEventState extends State<UpcomingEvent> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(viewportFraction: 0.9);
+    _pageController = PageController(viewportFraction: 1);
 
     _timer = Timer.periodic(Duration(seconds: 5), (timer) {
       if(_currentPage < widget.upcomingEvents.length - 1){
@@ -45,33 +45,34 @@ class _UpcomingEventState extends State<UpcomingEvent> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 220.0,
+      height: 265.0,
       child: PageView.builder(
         controller: _pageController,
         itemCount: widget.upcomingEvents.length,
         itemBuilder: (context, index) {
           final event = widget.upcomingEvents[index];
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-              elevation: 4.0,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Image.network(
-                      event.cover,
-                      height: 120.0,
-                      fit: BoxFit.cover,
+          return Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+            elevation: 4.0,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Image.network(
+                    event.cover,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Icon(Icons.broken_image, size: 70),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(6.0),
+                    child: Text(
+                      event.title,
+                      style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.start,
                     ),
-                    SizedBox(
-                      height: 8.0,
-                    ),
-                    Text(event.title, style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
-                  ],
-                )
+                  ),
+                ],
               ),
             ),
           );

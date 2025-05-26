@@ -35,7 +35,7 @@ class EventModel {
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
     return EventModel(
-      id: json['id'],
+      id: json['id'].toString(),
       title: json['name'],
       summary: json['summary'],
       deskripsi: json['description'],
@@ -47,8 +47,8 @@ class EventModel {
       lokasi: json['cityName'],
       organizer: json['ownerName'],
       link: json['link'],
-      quota: json['quota'],
-      pendaftaran: json['registrants'],
+      quota: json['quota'].toString(),
+      pendaftaran: json['registrants'].toString(),
     );
   }
 }
@@ -65,7 +65,7 @@ class EventResponse{
   });
 
   factory EventResponse.fromJson(Map<String, dynamic> json){
-    final List<dynamic> eventsJson = json['data'];
+    final List<dynamic> eventsJson = json['listEvents'];
     final List<EventModel> events = eventsJson.map((eventJson) => EventModel.fromJson(eventJson)).toList();
     return EventResponse(
       error: json['error'],
