@@ -9,13 +9,26 @@ class EventViewModel extends ChangeNotifier{
   List<EventModel> get upcomingEvents => _upcomingEvents;
 
   List<EventModel> _finishedEvents = [];
-  List<EventModel> get finishedEvents => _finishedEvents;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
+
+  String _searchQuery = '';
+
+  List<EventModel> get filteredEvents {
+    if (_searchQuery.isEmpty) return _finishedEvents;
+    return _finishedEvents.where((event) {
+      return event.title.toLowerCase().contains(_searchQuery.toLowerCase());
+    }).toList();
+  }
+
+  void setSearchQuery(String query) {
+    _searchQuery = query;
+    notifyListeners();
+  }
 
   Future<void> fetchUpcomingEvents() async {
     _isLoading = true;

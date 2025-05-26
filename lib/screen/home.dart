@@ -4,17 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:dicoding_event/component/upcoming.dart';
 import 'package:provider/provider.dart';
 
+import '../component/finished.dart';
+
 class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
     Future.microtask(()=>
     Provider.of<EventViewModel>(context, listen: false).fetchUpcomingEvents());
+    Future.microtask(()=>
+    Provider.of<EventViewModel>(context, listen: false).fetchFinishedEvents());
   }
 
   @override
@@ -26,37 +38,45 @@ class _HomePageState extends State<HomePage> {
           if (vm.isLoading) {
             return CircularProgressIndicator();
           }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                'Active Events',
-                style: kTitleUpcoming,
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              UpcomingEvent(upcomingEvents: vm.upcomingEvents),
-              SizedBox(
-                height: 8.0,
-              ),
-              Text(
-                'Finished Events',
-                style: kTitleUpcoming,
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              SizedBox(
-                height: 45,
-                child: TextField(
-                  decoration: kDecorationText,
-                  onChanged: (value) {
-                  print(value);
-                  },
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Active Events',
+                  style: kTitleUpcoming,
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 8.0,
+                ),
+                UpcomingEvent(upcomingEvents: vm.upcomingEvents),
+                SizedBox(
+                  height: 8.0,
+                ),
+                Text(
+                  'Finished Events',
+                  style: kTitleUpcoming,
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                SizedBox(
+                  height: 45,
+                  child: DecorationSearch(
+                    onPressed: (){
+                      _searchController.clear();
+                      vm.setSearchQuery('');
+                    },
+                    controller: _searchController,
+                    onChanged: (value) => vm.setSearchQuery(value),
+                  ),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                FinishedEvent(finishedEvents: vm.filteredEvents),
+              ],
+            ),
           );
         },
       ),

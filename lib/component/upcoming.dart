@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:dicoding_event/model/event.dart';
 
+import 'constrains.dart';
+
 class UpcomingEvent extends StatefulWidget {
   final List<EventModel> upcomingEvents;
 
@@ -45,35 +47,35 @@ class _UpcomingEventState extends State<UpcomingEvent> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 265.0,
+      height: 250.0,
       child: PageView.builder(
         controller: _pageController,
         itemCount: widget.upcomingEvents.length,
         itemBuilder: (context, index) {
           final event = widget.upcomingEvents[index];
           return Card(
+            color: secondColor,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            elevation: 4.0,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Image.network(
-                    event.cover,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Icon(Icons.broken_image, size: 70),
+            elevation: 2.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Image.network(
+                  event.cover,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Icon(Icons.broken_image, size: 70),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Text(
+                    event.title,
+                    style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.start,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(6.0),
-                    child: Text(
-                      event.title,
-                      style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },
