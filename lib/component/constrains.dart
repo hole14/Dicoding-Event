@@ -8,6 +8,22 @@ const kTitleUpcoming = TextStyle(
   fontWeight: FontWeight.bold
 );
 
+class kDetailEvent extends StatelessWidget {
+  final String title;
+  final TextAlign textAlign;
+  kDetailEvent({required this.title, required this.textAlign});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: TextStyle(fontSize: 12),
+      textAlign: textAlign,
+    );
+  }
+}
+
+
 class DecorationSearch  extends StatelessWidget{
   final VoidCallback onPressed;
   final ValueChanged<String>? onChanged;

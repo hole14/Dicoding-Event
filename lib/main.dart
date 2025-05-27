@@ -42,14 +42,12 @@ class _HomeState extends State<Home> {
     HomePage(),
     FavoriteScreen(),
     SettingPage(),
-    DetailPage(),
   ];
 
   final List<String> _titles = [
     'Events',
     'Favorite Events',
     'Settings',
-    'Detail Event'
   ];
 
   void _onItemTapped(int index){

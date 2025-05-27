@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:dicoding_event/model/event.dart';
 
+import '../screen/detail.dart';
 import 'constrains.dart';
 
 class UpcomingEvent extends StatefulWidget {
@@ -53,29 +54,38 @@ class _UpcomingEventState extends State<UpcomingEvent> {
         itemCount: widget.upcomingEvents.length,
         itemBuilder: (context, index) {
           final event = widget.upcomingEvents[index];
-          return Card(
-            color: secondColor,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            elevation: 2.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Image.network(
-                  event.cover,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Icon(Icons.broken_image, size: 70),
+          return GestureDetector(
+            onTap: (){
+              Navigator.push(
+                context, MaterialPageRoute(
+                  builder: (_) => DetailPage(event: event),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: Text(
-                    event.title,
-                    style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+              );
+            },
+            child: Card(
+              color: secondColor,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+              elevation: 2.0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Image.network(
+                    event.cover,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Icon(Icons.broken_image, size: 70),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: EdgeInsets.all(6.0),
+                    child: Text(
+                      event.title,
+                      style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.start,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
