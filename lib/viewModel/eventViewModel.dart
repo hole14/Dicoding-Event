@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dicoding_event/model/event.dart';
 import 'package:dicoding_event/service/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EventViewModel extends ChangeNotifier{
   final EventService _eventService = EventService();
@@ -13,6 +14,12 @@ class EventViewModel extends ChangeNotifier{
   final List<EventModel> _favorite = [];
   List<EventModel> get favorite => _favorite;
 
+  static const String _prefFavorite = "favorite";
+
+  EventViewModel() {
+    _loadFavorite();
+  }
+
   bool isFavorite(EventModel event) =>
     _favorite.any((e) => e.id == event.id);
 
@@ -22,7 +29,32 @@ class EventViewModel extends ChangeNotifier{
     } else {
       _favorite.add(event);
     }
+    _saveFavorite();
     notifyListeners();
+  }
+
+  Future<void> _saveFavorite() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setStringList(_prefFavorite, _favorite.map((e) => e.id).toList());
+  }
+
+  Future<void> _loadFavorite() async {
+    final prefs = await SharedPreferences.getInstance();
+    final favoriteIds = prefs.getStringList(_prefFavorite) ?? [];
+    List<EventModel> favoriteEvents = [];
+    favoriteEvents.addAll(_upcomingEvents);
+    favoriteEvents.addAll(_finishedEvents);
+    _favorite.clear();
+
+    for (var id in favoriteIds) {
+      try {
+        final event = favoriteEvents.firstWhere((e) => e.id == id);
+        _favorite.add(event);
+      } catch (e) {
+        print(e);
+      }
+      notifyListeners();
+    }
   }
 
   bool _isLoading = false;
@@ -48,27 +80,26 @@ class EventViewModel extends ChangeNotifier{
   Future<void> fetchUpcomingEvents() async {
     _isLoading = true;
     notifyListeners();
-
     try{
       _upcomingEvents = await _eventService.upcomingEvent();
-      _errorMessage = null;
+      _isLoading = false;
+      notifyListeners();
+      await _loadFavorite();
     } catch (e) {
+      _isLoading = false;
       _errorMessage = e.toString();
+      notifyListeners();
     }
-
-    _isLoading = false;
-    notifyListeners();
   }
 
   Future<void> fetchFinishedEvents() async {
-    _isLoading = true;
-    notifyListeners();
-
     try{
       _finishedEvents = await _eventService.finishedEvent();
-      _errorMessage = null;
+      notifyListeners();
+      await _loadFavorite();
     } catch (e) {
       _errorMessage = e.toString();
+      notifyListeners();
     }
 
     _isLoading = false;

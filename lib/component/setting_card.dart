@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'constrains.dart';
+
 class SettingCard extends StatelessWidget {
   final String title;
   final bool value;
@@ -15,7 +17,7 @@ class SettingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.85),
+        color: secondColor,
         borderRadius: BorderRadius.circular(14),
       ),
       margin: EdgeInsets.symmetric(horizontal: 8),
