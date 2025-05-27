@@ -1,17 +1,19 @@
+import 'package:dicoding_event/component/constrains.dart';
 import 'package:dicoding_event/screen/favorite.dart';
-import 'package:dicoding_event/screen/detail.dart';
-import 'package:dicoding_event/screen/setting.dart';
 import 'package:dicoding_event/screen/home.dart';
+import 'package:dicoding_event/screen/setting.dart';
 import 'package:dicoding_event/viewModel/eventViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:dicoding_event/component/constrains.dart';
+
+import 'component/theme_notifier.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => EventViewModel()),
+        ChangeNotifierProvider(create: (_) => ThemeNotifier()),
       ],
       child: MyApp(),
     )
@@ -21,8 +23,12 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final appSetting = context.watch<ThemeNotifier>();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: appSetting.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       home: Home(),
     );
   }
