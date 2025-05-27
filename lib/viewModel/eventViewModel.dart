@@ -10,6 +10,21 @@ class EventViewModel extends ChangeNotifier{
 
   List<EventModel> _finishedEvents = [];
 
+  final List<EventModel> _favorite = [];
+  List<EventModel> get favorite => _favorite;
+
+  bool isFavorite(EventModel event) =>
+    _favorite.any((e) => e.id == event.id);
+
+  void toggleFavorite(EventModel event) {
+    if (isFavorite(event)) {
+      _favorite.removeWhere((e) => e.id == event.id);
+    } else {
+      _favorite.add(event);
+    }
+    notifyListeners();
+  }
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 

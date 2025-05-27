@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:provider/provider.dart';
 import '../component/constrains.dart';
 import '../model/event.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../viewModel/eventViewModel.dart';
 
 class DetailPage extends StatelessWidget {
 
@@ -17,6 +20,8 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isFavorite = context.watch<EventViewModel>().isFavorite(event);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Detail Event'),
@@ -30,8 +35,10 @@ class DetailPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: secondColor,
         elevation: 6.0,
-        child: Icon(Icons.favorite_border),
-        onPressed: (){}
+        child: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
+        onPressed: (){
+          context.read<EventViewModel>().toggleFavorite(event);
+        }
       ),
       body: SingleChildScrollView(
         child: Column(
