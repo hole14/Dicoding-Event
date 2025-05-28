@@ -89,7 +89,7 @@ class EventViewModel extends ChangeNotifier{
       notifyListeners();
       await _loadFavorite();
 
-      for (var event in _favorite) {
+      for (var event in _upcomingEvents) {
         await NotificationService.schedulePreEventNotification(
           id: int.parse(event.id),
           title: event.title,
