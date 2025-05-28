@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:dicoding_event/model/event.dart';
 import 'package:dicoding_event/service/api.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../component/notifikasi.dart';
 
 
 class EventViewModel extends ChangeNotifier{
@@ -86,6 +88,16 @@ class EventViewModel extends ChangeNotifier{
       _isLoading = false;
       notifyListeners();
       await _loadFavorite();
+
+      for (var event in _favorite) {
+        await NotificationService.schedulePreEventNotification(
+          id: int.parse(event.id),
+          title: event.title,
+          body: "Event '${event.title}' akan segera dimulai!",
+          beginTime: DateTime.parse(formatTime(event.tanggalAwal)),
+          isNotificationOn: true,
+        );
+      }
     } catch (e) {
       _isLoading = false;
       _errorMessage = e.toString();
@@ -106,4 +118,20 @@ class EventViewModel extends ChangeNotifier{
     _isLoading = false;
     notifyListeners();
   }
+
+  Future<void> cancelAllNotifications() async {
+    final allEventIds = [
+      ..._upcomingEvents.map((e) => int.tryParse(e.id)).whereType<int>(),
+      ..._finishedEvents.map((e) => int.tryParse(e.id)).whereType<int>(),
+    ];
+    for (var eventId in allEventIds) {
+      await NotificationService.cancelNotification(eventId);
+    }
+  }
+}
+
+String formatTime(String timeString) {
+  final time = DateTime.parse(timeString);
+  final formatter = DateFormat('HH:mm');
+  return formatter.format(time);
 }

@@ -5,9 +5,12 @@ import 'package:dicoding_event/screen/setting.dart';
 import 'package:dicoding_event/viewModel/eventViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'component/notifikasi.dart';
 import 'component/theme_notifier.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.init();
   runApp(
     MultiProvider(
       providers: [

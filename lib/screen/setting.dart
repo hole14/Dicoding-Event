@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dicoding_event/component/setting_card.dart';
 import 'package:dicoding_event/component/theme_notifier.dart';
 import 'package:provider/provider.dart';
+import '../viewModel/eventViewModel.dart';
 
 class SettingPage extends StatelessWidget {
   @override
@@ -20,7 +21,12 @@ class SettingPage extends StatelessWidget {
           SettingCard(
             title: 'Notification',
             value: appSetting.isNotificationOn,
-            onChanged: appSetting.setNotification,
+            onChanged: (value) async {
+              await appSetting.setNotification(value);
+              if (!value) {
+                await EventViewModel().cancelAllNotifications();
+              }
+            },
           ),
         ],
       ),
