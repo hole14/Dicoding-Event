@@ -6,7 +6,7 @@ class ThemeNotifier extends ChangeNotifier{
   static const String prefNotif = "isNotificationOn";
 
   bool _isDarkMode = false;
-  bool _isNotificationOn = true;
+  bool _isNotificationOn = false;
 
   bool get isDarkMode => _isDarkMode;
   bool get isNotificationOn => _isNotificationOn;

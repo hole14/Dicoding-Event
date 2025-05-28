@@ -3,6 +3,7 @@ import 'package:dicoding_event/model/event.dart';
 import 'package:dicoding_event/service/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class EventViewModel extends ChangeNotifier{
   final EventService _eventService = EventService();
 

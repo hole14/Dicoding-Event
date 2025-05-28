@@ -1,6 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tzdata;
+import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
   static final _notification = FlutterLocalNotificationsPlugin();
@@ -38,5 +38,38 @@ class NotificationService {
       payload: 'event_reminder',
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
+  }
+  static Future<void> schedulePreEventNotification({
+    required int id,
+    required String title,
+    required String body,
+    required DateTime beginTime,
+    required bool isNotificationOn,
+  })async{
+    if(!isNotificationOn) return;
+
+    final interval = 10;
+    final offSet = 60;
+    final now = DateTime.now();
+    DateTime scheduledDate = beginTime.subtract(Duration(minutes: offSet));
+    int i = 0;
+
+    while(scheduledDate.isBefore(beginTime)){
+      if (scheduledDate.isAfter(now)){
+        await scheduleNotification(
+          id: id * 100 + i,
+          title: title,
+          body: body,
+          scheduledDate: scheduledDate,
+        );
+      }
+      scheduledDate = scheduledDate.add(Duration(minutes: interval));
+      i++;
+    }
+  }
+  static Future<void> cancelNotification(int id) async {
+    for (int i = 0; i < 10; i++) {
+      await _notification.cancel(id * 100 + i);
+    }
   }
 }

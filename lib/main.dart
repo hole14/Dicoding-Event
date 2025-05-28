@@ -5,7 +5,6 @@ import 'package:dicoding_event/screen/setting.dart';
 import 'package:dicoding_event/viewModel/eventViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'component/theme_notifier.dart';
 
 void main() {
