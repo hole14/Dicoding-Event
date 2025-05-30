@@ -5,6 +5,7 @@ import 'package:dicoding_event/component/upcoming.dart';
 import 'package:provider/provider.dart';
 
 import '../component/finished.dart';
+import '../component/theme_notifier.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     Future.microtask(()=>
-    Provider.of<EventViewModel>(context, listen: false).fetchUpcomingEvents());
+    Provider.of<EventViewModel>(context, listen: false).fetchUpcomingEvents(isNotificationOn: Provider.of<ThemeNotifier>(context, listen: false).isNotificationOn));
     Future.microtask(()=>
     Provider.of<EventViewModel>(context, listen: false).fetchFinishedEvents());
   }

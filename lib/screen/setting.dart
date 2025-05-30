@@ -32,7 +32,7 @@ class SettingPage extends StatelessWidget {
                     title: event.title,
                     body: "Event '${event.title}' akan segera dimulai!",
                     beginTime: DateTime.parse(event.tanggalAwal),
-                    isNotificationOn: true,
+                    isNotificationOn: appSetting.isNotificationOn,
                   );
                 }
               } else {

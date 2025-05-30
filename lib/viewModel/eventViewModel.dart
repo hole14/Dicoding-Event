@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:dicoding_event/model/event.dart';
 import 'package:dicoding_event/service/api.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../component/notifikasi.dart';
+import '../component/theme_notifier.dart';
 
 
 class EventViewModel extends ChangeNotifier{
@@ -80,7 +82,7 @@ class EventViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> fetchUpcomingEvents() async {
+  Future<void> fetchUpcomingEvents({required bool isNotificationOn}) async {
     _isLoading = true;
     notifyListeners();
     try{
@@ -95,7 +97,7 @@ class EventViewModel extends ChangeNotifier{
           title: event.title,
           body: "Event '${event.title}' akan segera dimulai!",
           beginTime: DateTime.parse(event.tanggalAwal),
-          isNotificationOn: true,
+          isNotificationOn: isNotificationOn,
         );
       }
     } catch (e) {
