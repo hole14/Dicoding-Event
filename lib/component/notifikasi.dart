@@ -22,10 +22,7 @@ class NotificationService {
       id,
       title,
       body,
-      tz.TZDateTime.from(
-        scheduledDate,
-        tz.local
-      ),
+      tz.TZDateTime.from(scheduledDate, tz.local),
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'main_channel',
@@ -45,17 +42,17 @@ class NotificationService {
     required String body,
     required DateTime beginTime,
     required bool isNotificationOn,
-  })async{
-    if(!isNotificationOn) return;
+  }) async {
+    if (!isNotificationOn) return;
 
-    final interval = 10;
-    final offSet = 60;
+    const interval = 10;
+    const offSet = 60;
     final now = DateTime.now();
     DateTime scheduledDate = beginTime.subtract(Duration(minutes: offSet));
     int i = 0;
 
-    while(scheduledDate.isBefore(beginTime)){
-      if (scheduledDate.isAfter(now)){
+    while (scheduledDate.isBefore(beginTime)) {
+      if (scheduledDate.isAfter(now)) {
         await scheduleNotification(
           id: id * 100 + i,
           title: title,
@@ -67,6 +64,7 @@ class NotificationService {
       i++;
     }
   }
+
   static Future<void> cancelNotification(int id) async {
     for (int i = 0; i < 10; i++) {
       await _notification.cancel(id * 100 + i);

@@ -94,7 +94,7 @@ class EventViewModel extends ChangeNotifier{
           id: int.parse(event.id),
           title: event.title,
           body: "Event '${event.title}' akan segera dimulai!",
-          beginTime: DateTime.parse(formatTime(event.tanggalAwal)),
+          beginTime: DateTime.parse(event.tanggalAwal),
           isNotificationOn: true,
         );
       }
@@ -130,8 +130,3 @@ class EventViewModel extends ChangeNotifier{
   }
 }
 
-String formatTime(String timeString) {
-  final time = DateTime.parse(timeString);
-  final formatter = DateFormat('HH:mm');
-  return formatter.format(time);
-}

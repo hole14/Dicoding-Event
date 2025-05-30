@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dicoding_event/component/setting_card.dart';
 import 'package:dicoding_event/component/theme_notifier.dart';
 import 'package:provider/provider.dart';
+import '../component/notifikasi.dart';
 import '../viewModel/eventViewModel.dart';
 
 class SettingPage extends StatelessWidget {
@@ -23,8 +24,19 @@ class SettingPage extends StatelessWidget {
             value: appSetting.isNotificationOn,
             onChanged: (value) async {
               await appSetting.setNotification(value);
-              if (!value) {
-                await EventViewModel().cancelAllNotifications();
+              final eventViewModel = Provider.of<EventViewModel>(context, listen: false);
+              if (value) {
+                for (var event in eventViewModel.upcomingEvents) {
+                  await NotificationService.schedulePreEventNotification(
+                    id: int.parse(event.id),
+                    title: event.title,
+                    body: "Event '${event.title}' akan segera dimulai!",
+                    beginTime: DateTime.parse(event.tanggalAwal),
+                    isNotificationOn: true,
+                  );
+                }
+              } else {
+                await eventViewModel.cancelAllNotifications();
               }
             },
           ),
